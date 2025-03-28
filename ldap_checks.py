@@ -45,8 +45,7 @@ def send_ldap_bind(ip, sni_hostname, port, use_ldaps, username, password):
         with socket.create_connection((ip, port), timeout=TIMEOUT) as raw_sock:
             sock = raw_sock
             if use_ldaps:
-                context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-                context.minimum_version = ssl.TLSVersion.TLSv1_2
+                context = ssl._create_unverified_context()
                 sock = context.wrap_socket(raw_sock, server_hostname=sni_hostname)
 
             msg = build_simple_bind(username, password)
